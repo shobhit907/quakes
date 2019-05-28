@@ -38,34 +38,36 @@ class HomeState extends State<Home> {
         ],
       ),
       body: new Center(
-        child: new ListView.builder(
-            itemCount: _msg.length * 2,
-            itemBuilder: (BuildContext context, int position) {
-              if (position.isOdd) {
-                return new Divider();
-              }
-              int index = position ~/ 2;
-              DateTime d = DateTime.fromMillisecondsSinceEpoch(
-                  _msg[index]['properties']['time']);
-              String datetime =
-                  "${new DateFormat.MMMM().format(d)} ${d.day}, ${d.year} ${new DateFormat.jm().format(d)}";
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: new ListTile(
-                  title: new Text(datetime),
-                  subtitle: new Text(_msg[index]['properties']['place']),
-                  leading: new CircleAvatar(
-                    child:
-                        new Text(_msg[index]['properties']['mag'].toString()),
-                    backgroundColor: Colors.green,
+        child: new Scrollbar(
+          child: new ListView.builder(
+              itemCount: _msg.length * 2,
+              itemBuilder: (BuildContext context, int position) {
+                if (position.isOdd) {
+                  return new Divider();
+                }
+                int index = position ~/ 2;
+                DateTime d = DateTime.fromMillisecondsSinceEpoch(
+                    _msg[index]['properties']['time']);
+                String datetime =
+                    "${new DateFormat.MMMM().format(d)} ${d.day}, ${d.year} ${new DateFormat.jm().format(d)}";
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: new ListTile(
+                    title: new Text(datetime),
+                    subtitle: new Text(_msg[index]['properties']['place']),
+                    leading: new CircleAvatar(
+                      child:
+                          new Text(_msg[index]['properties']['mag'].toString()),
+                      backgroundColor: Colors.green,
+                    ),
+                    onTap: () {
+                      showOnTap(context,
+                          "Magnitude : ${_msg[index]['properties']['mag']} \nPlace : ${_msg[index]['properties']['place']}");
+                    },
                   ),
-                  onTap: () {
-                    showOnTap(context,
-                        "Magnitude : ${_msg[index]['properties']['mag']} \nPlace : ${_msg[index]['properties']['place']}");
-                  },
-                ),
-              );
-            }),
+                );
+              }),
+        ),
       ),
     );
   }
